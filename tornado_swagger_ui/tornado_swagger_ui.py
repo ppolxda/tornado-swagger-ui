@@ -57,7 +57,7 @@ def get_tornado_handler(
     module_path = sys.modules.get("tornado_swagger_ui")
     dist = os.path.join(
         os.path.dirname(os.path.abspath(module_path.__file__)),
-        "dist"
+        "assets"
     )
 
     handlers_list = [

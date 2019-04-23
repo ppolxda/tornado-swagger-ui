@@ -11,12 +11,12 @@ with open(path.join(here, 'tornado_swagger_ui/README.md'), encoding='utf-8') as 
 
 setup(
     name='tornado_swagger_ui',
-    version='1.0',
+    version='0.1',
     description='Swagger UI for Tornado',
     long_description=long_description,
     zip_safe=False,
 
-    url='',
+    url='https://github.com/DominguesM/tornado-swagger-ui',
 
     author='Maicon Domingues',
     author_email='dominguesm@outlook.com',
@@ -40,13 +40,13 @@ setup(
         'tornado_swagger_ui': [
             'LICENSE',
             'README.md',
-            'dist/VERSION',
-            'dist/LICENSE',
-            'dist/README.md',
-            'dist/*.html',
-            'dist/*.js',
-            'dist/*.css',
-            'dist/*.png'
+            'assets/VERSION',
+            'assets/LICENSE',
+            'assets/README.md',
+            'assets/*.html',
+            'assets/*.js',
+            'assets/*.css',
+            'assets/*.png'
         ],
     }
 )
