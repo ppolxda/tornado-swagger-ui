@@ -1,21 +1,27 @@
 import json
 import os
+import sys
 
 import tornado.web
 
 
 class SwaggerHandler(tornado.web.RequestHandler):
-    SWAGGER_URL = "/api/docs"
-    API_URL = "https://petstore.swagger.io/v2/swagger.json"
-    APP_NAME = "Swagger UI"
-    OAUTH_CONFIG = None
 
-    DEFAULT_CONFIG = {
-        "app_name": APP_NAME,
-        'dom_id': '#swagger-ui',
-        'url': API_URL,
-        'layout': 'StandaloneLayout'
-    }
+    def initialize(self, path, base_url, app_name, api_url):
+        self.index = path + "/index.html"
+
+        self.base_url = base_url
+        self.api_url = api_url
+        self.app_name = app_name
+
+        self.oauth_config = None
+
+        self.default_config = {
+            "app_name": self.app_name,
+            'dom_id': '#swagger-ui',
+            'url': self.api_url,
+            'layout': 'StandaloneLayout'
+        }
 
     def set_default_headers(self):
         headers = ["origin", "x-csrf-token", "content-type", "accept",
@@ -25,19 +31,19 @@ class SwaggerHandler(tornado.web.RequestHandler):
         self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
 
     def get(self):
-        oauth_config_json = SwaggerHandler.OAUTH_CONFIG
+        oauth_config_json = self.oauth_config
         if oauth_config_json:
             oauth_config_json = json.dumps(oauth_config_json)
 
         fields = {
-            'base_url': SwaggerHandler.SWAGGER_URL,
-            'app_name': SwaggerHandler.APP_NAME,
-            'config_json': json.dumps(SwaggerHandler.DEFAULT_CONFIG),
+            'base_url': self.base_url,
+            'app_name': self.app_name,
+            'config_json': json.dumps(self.default_config),
             'oauth_config_json': oauth_config_json
 
         }
 
-        self.render("dist/index.html", **fields)
+        self.render(self.index, **fields)
 
 
 def get_tornado_handler(
@@ -48,22 +54,24 @@ def get_tornado_handler(
     oauth_config=None
 ):
 
-    handler = SwaggerHandler
-    handler.SWAGGER_URL = base_url
-    handler.API_URL = api_url
-    handler.APP_NAME = app_name
-
-    if config:
-        handler.DEFAULT_CONFIG.update(config)
-
+    module_path = sys.modules.get("tornado_swagger_ui")
     dist = os.path.join(
-        os.path.dirname(os.path.realpath(__file__)),
+        os.path.dirname(os.path.abspath(module_path.__file__)),
         "dist"
     )
 
     handlers_list = [
         (r"/swagger/dist/(.*)", tornado.web.StaticFileHandler, {"path": dist}),
-        (base_url, handler)
+        (
+            base_url,
+            SwaggerHandler,
+            {
+                "path": dist,
+                "base_url": base_url,
+                "app_name": app_name,
+                "api_url": api_url
+            }
+        )
     ]
 
     return handlers_list
