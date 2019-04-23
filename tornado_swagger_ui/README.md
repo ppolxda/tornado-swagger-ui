@@ -21,7 +21,7 @@ SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI (without trailing '/')
 # Our API url (can of course be a local resource)
 API_URL = 'http://petstore.swagger.io/v2/swagger.json'
 
-# Call factory function to create our blueprint
+# Call factory function to create our handler
 swagger_handlers = get_tornado_handler(
     base_url=SWAGGER_URL,
     api_url=API_URL,
