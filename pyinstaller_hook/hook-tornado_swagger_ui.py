@@ -1,10 +1,7 @@
-# import pkg_resources
-from PyInstaller.utils.hooks import collect_data_files
+import pkg_resources
+from PyInstaller.utils.hooks import collect_system_data_files
 
-
+path = pkg_resources.resource_filename('tornado_swagger_ui', '')
 datas = (
-    collect_data_files(
-        'tornado_swagger_ui.assets'  # noqa
-    )
+    collect_system_data_files(path)
 )
-print('sdfsdfsdaf:', datas)
