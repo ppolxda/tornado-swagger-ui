@@ -7,9 +7,9 @@
   <title>{{app_name}}</title>
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700"
     rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="/swagger/dist/swagger-ui.css">
-  <link rel="icon" type="image/png" href="/swagger/dist/favicon-32x32.png" sizes="32x32" />
-  <link rel="icon" type="image/png" href="/swagger/dist/favicon-16x16.png" sizes="16x16" />
+  <link rel="stylesheet" type="text/css" href="{{ make_uri('/swagger/dist/swagger-ui.css') }}">
+  <link rel="icon" type="image/png" href="{{ make_uri('/swagger/dist/favicon-32x32.png') }}" sizes="32x32" />
+  <link rel="icon" type="image/png" href="{{ make_uri('/swagger/dist/favicon-16x16.png') }}" sizes="16x16" />
   <style>
     html {
       box-sizing: border-box;
@@ -72,8 +72,8 @@
 
   <div id="swagger-ui"></div>
 
-  <script src="/swagger/dist/swagger-ui-bundle.js"> </script>
-  <script src="/swagger/dist/swagger-ui-standalone-preset.js"> </script>
+  <script src="{{make_uri('/swagger/dist/swagger-ui-bundle.js')}}"> </script>
+  <script src="{{make_uri('/swagger/dist/swagger-ui-standalone-preset.js')}}"> </script>
   <script>
     var config = {
       presets: [
@@ -84,7 +84,7 @@
         SwaggerUIBundle.plugins.DownloadUrl
       ]
     };
-    var tornado_config = '{% raw config_json%}'
+    var tornado_config = '{% raw config_json %}'
     var user_config = JSON.parse(tornado_config);  // User config options provided from Python code
     for (var attrname in user_config) { config[attrname] = user_config[attrname]; }
 
